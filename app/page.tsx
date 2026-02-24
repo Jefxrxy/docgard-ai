@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import { UploadCloud, FileSearch, ShieldCheck, RefreshCw, Image as ImageIcon, CheckCircle, Loader2, Download, AlertTriangle, X } from 'lucide-react';
+import Link from 'next/link'; // 🚀 Added the Next.js Link router
 
 export default function DocumentVerificationTool() {
   const [file, setFile] = useState<File | null>(null);
@@ -118,6 +119,8 @@ export default function DocumentVerificationTool() {
             <span className="text-xl font-black text-slate-900 tracking-tight">DocGard<span className="text-blue-600">AI</span></span>
           </div>
           <nav className="flex items-center gap-6 text-sm font-semibold text-slate-500">
+            {/* 🚀 THE UPDATED TOP NAVIGATION */}
+            <Link href="/blog" className="hover:text-slate-900 transition-colors">Blog</Link>
             <button onClick={() => setShowHowItWorks(true)} className="hover:text-slate-900 transition-colors">How it Works</button>
           </nav>
         </div>
@@ -215,7 +218,6 @@ export default function DocumentVerificationTool() {
         <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
           <p>© 2026 DocGard. A product of Jeff Enterprises.</p>
           <div className="flex gap-4 text-slate-500">
-            {/* 🚀 THE FULLY CONNECTED FOOTER LINKS */}
             <a href="/privacy" className="hover:text-slate-300 transition-colors">Privacy Policy</a>
             <a href="/terms" className="hover:text-slate-300 transition-colors">Terms of Service</a>
             <a href="/about" className="hover:text-slate-300 transition-colors">About Us</a>
