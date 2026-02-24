@@ -33,7 +33,8 @@ export default function DocumentVerificationTool() {
     formData.append('file', selectedFile);
 
     try {
-      const response = await fetch('http://localhost:8000/analyze', {
+      // 🚀 THE BRIDGE: Now pointing directly to your live Render AI Engine!
+      const response = await fetch('https://docgard-ai.onrender.com/analyze', {
         method: 'POST',
         body: formData,
       });
@@ -54,7 +55,7 @@ export default function DocumentVerificationTool() {
 
     } catch (error) {
       console.error(error);
-      alert("AI Engine Offline: Make sure to run your Python server!");
+      alert("AI Engine is waking up! (Free servers take 50 seconds to spin up on the first try. Please try uploading again in 1 minute).");
       setStatus('idle');
     }
   };
@@ -173,7 +174,6 @@ export default function DocumentVerificationTool() {
                   <div>
                     <p className="text-xs font-bold text-slate-400 uppercase mb-2 flex items-center gap-1"><AlertTriangle className="w-4 h-4 text-blue-500"/> ELA Heatmap (AI Generated)</p>
                     <div className="rounded-xl overflow-hidden border-2 border-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.2)] bg-black flex items-center justify-center h-64 relative">
-                      {/* FIX: Render an iframe if the result is a PDF, otherwise an img */}
                       {resultData.mimeType === 'application/pdf' ? (
                         <iframe src={resultData.heatmap} className="w-full h-full border-0 bg-white" title="PDF Heatmap Result" />
                       ) : (
