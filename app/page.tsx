@@ -33,7 +33,6 @@ export default function DocumentVerificationTool() {
     formData.append('file', selectedFile);
 
     try {
-      // 🚀 THE BRIDGE: Now pointing directly to your live Render AI Engine!
       const response = await fetch('https://docgard-ai.onrender.com/analyze', {
         method: 'POST',
         body: formData,
@@ -82,7 +81,7 @@ export default function DocumentVerificationTool() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans relative">
+    <div className="min-h-screen bg-slate-50 font-sans relative flex flex-col">
       
       {showHowItWorks && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-in fade-in duration-200">
@@ -124,22 +123,15 @@ export default function DocumentVerificationTool() {
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-4 mt-8 hidden sm:block">
-        <div className="bg-slate-200/50 border border-dashed border-slate-300 rounded-xl h-[90px] w-full flex flex-col items-center justify-center text-slate-400">
-          <span className="text-[10px] font-bold uppercase tracking-widest mb-1">Advertisement</span>
-          <span className="text-xs">Leaderboard Slot (728 x 90)</span>
-        </div>
-      </div>
-
-      <main className="max-w-6xl mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8">
+      <main className="max-w-6xl mx-auto px-4 py-12 flex flex-col lg:flex-row gap-8 flex-grow w-full">
         <div className="flex-1 space-y-6">
           <h1 className="text-3xl font-black text-slate-900 mb-3">Detect Fake Documents</h1>
-          <p className="text-slate-500 mb-6">Instantly run Error Level Analysis (ELA) to catch modified bank statements and forged invoices.</p>
+          <p className="text-slate-500 mb-6 max-w-2xl">Instantly run Error Level Analysis (ELA) to catch modified bank statements and forged invoices.</p>
           
           <div className="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden flex flex-col">
             
             {status === 'idle' && (
-              <div onDragOver={handleDragOver} onDrop={handleDrop} onClick={() => fileInputRef.current?.click()} className="p-16 sm:p-20 flex flex-col items-center justify-center cursor-pointer group hover:bg-slate-50 transition-colors min-h-[500px]">
+              <div onDragOver={handleDragOver} onDrop={handleDrop} onClick={() => fileInputRef.current?.click()} className="p-16 sm:p-20 flex flex-col items-center justify-center cursor-pointer group hover:bg-slate-50 transition-colors min-h-[400px]">
                 <input type="file" ref={fileInputRef} onChange={(e) => e.target.files && handleFileUpload(e.target.files[0])} className="hidden" accept="image/jpeg, image/png, application/pdf" />
                 <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><UploadCloud className="w-10 h-10 text-blue-600" /></div>
                 <h3 className="text-xl font-bold text-slate-900">Upload Document for ELA</h3>
@@ -148,7 +140,7 @@ export default function DocumentVerificationTool() {
             )}
 
             {status === 'processing' && (
-              <div className="p-20 flex flex-col items-center justify-center text-center min-h-[500px]">
+              <div className="p-20 flex flex-col items-center justify-center text-center min-h-[400px]">
                 <Loader2 className="w-12 h-12 text-blue-600 animate-spin mb-6" />
                 <h3 className="text-xl font-bold text-slate-900">Analyzing Cryptographic Layers...</h3>
                 <p className="text-slate-500 mt-2">Checking compression signatures against the original file structure.</p>
@@ -206,36 +198,28 @@ export default function DocumentVerificationTool() {
                     <RefreshCw className="w-5 h-5" /> Scan Another
                   </button>
                 </div>
-
-                <div className="mt-8 pt-6 border-t border-slate-100">
-                  <div className="bg-slate-200/50 border border-dashed border-slate-300 rounded-xl h-[120px] w-full flex flex-col items-center justify-center text-slate-400">
-                    <span className="text-[10px] font-bold uppercase tracking-widest mb-1">Sponsored Content</span>
-                    <span className="text-xs">In-Article Ad Slot</span>
-                  </div>
-                </div>
               </div>
             )}
           </div>
         </div>
 
         <aside className="w-full lg:w-80 space-y-6 shrink-0">
-          <div className="bg-slate-200/50 border border-dashed border-slate-300 rounded-2xl h-[250px] flex flex-col items-center justify-center text-slate-400">
-            <span className="text-[10px] font-bold uppercase tracking-widest mb-1">Advertisement</span>
-            <span className="text-xs">Sidebar Rectangle (300 x 250)</span>
-          </div>
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm sticky top-24">
             <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2"><CheckCircle className="w-5 h-5 text-emerald-500" /> Professional Tool</h3>
             <p className="text-sm text-slate-600 font-medium leading-relaxed mb-4">DocGard relies on cryptographic Error Level Analysis to detect pixel resaving inconsistencies—standard practice in digital forensics.</p>
-          </div>
-          <div className="bg-slate-200/50 border border-dashed border-slate-300 rounded-2xl h-[400px] hidden lg:flex flex-col items-center justify-center text-slate-400 sticky top-24">
-            <span className="text-[10px] font-bold uppercase tracking-widest mb-1">Advertisement</span>
-            <span className="text-xs">Sticky Sidebar Slot</span>
           </div>
         </aside>
       </main>
 
-      <footer className="bg-slate-900 text-slate-400 py-8 text-center text-sm border-t border-slate-800">
-        <p>© 2026 DocGard. A product of Jeff Enterprises.</p>
+      <footer className="bg-slate-900 text-slate-400 py-8 text-center text-sm border-t border-slate-800 mt-auto">
+        <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p>© 2026 DocGard. A product of Jeff Enterprises.</p>
+          <div className="flex gap-4 text-slate-500">
+            <a href="#" className="hover:text-slate-300 transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-slate-300 transition-colors">Terms of Service</a>
+            <a href="#" className="hover:text-slate-300 transition-colors">About Us</a>
+          </div>
+        </div>
       </footer>
     </div>
   );
