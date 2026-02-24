@@ -215,10 +215,10 @@ export default function DocumentVerificationTool() {
         <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
           <p>© 2026 DocGard. A product of Jeff Enterprises.</p>
           <div className="flex gap-4 text-slate-500">
-            {/* 🚀 THE UPDATED FOOTER LINKS */}
+            {/* 🚀 THE FULLY CONNECTED FOOTER LINKS */}
             <a href="/privacy" className="hover:text-slate-300 transition-colors">Privacy Policy</a>
             <a href="/terms" className="hover:text-slate-300 transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-slate-300 transition-colors">About Us</a>
+            <a href="/about" className="hover:text-slate-300 transition-colors">About Us</a>
           </div>
         </div>
       </footer>
