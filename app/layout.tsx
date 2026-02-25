@@ -2,15 +2,14 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-// This loads the standard, clean font for your app
 const inter = Inter({ subsets: ["latin"] });
 
-// 🚀 YOUR CUSTOM METADATA & FAVICON
+// 🚀 YOUR UPDATED METADATA TARGETING THE NEW SVG ICON
 export const metadata: Metadata = {
   title: "DocGard AI | Document Verification & Forensics",
   description: "Instantly run Error Level Analysis (ELA) to catch modified bank statements and forged invoices. A forensic tool by Jeff Enterprises.",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/icon.svg", 
   },
 };
 
