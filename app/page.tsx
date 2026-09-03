@@ -81,6 +81,46 @@ export default function DocumentVerificationTool() {
     setResultData(null);
   };
 
+  // Helper function to dynamically style the results card
+  const getScoreTheme = (score: number) => {
+    if (score <= 45) {
+      return {
+        bg: 'bg-emerald-50 border-emerald-100',
+        iconTheme: 'text-emerald-600',
+        titleTheme: 'text-emerald-900',
+        badgeTheme: 'border-emerald-200 text-emerald-600',
+        textTheme: 'text-emerald-800',
+        title: 'Document Appears Authentic',
+        desc: 'Compression signatures are within normal bounds. Natural variance from corporate logos or letterheads is expected.',
+        Icon: ShieldCheck
+      };
+    } else if (score <= 70) {
+      return {
+        bg: 'bg-amber-50 border-amber-100',
+        iconTheme: 'text-amber-500',
+        titleTheme: 'text-amber-900',
+        badgeTheme: 'border-amber-200 text-amber-600',
+        textTheme: 'text-amber-800',
+        title: 'Suspicious Variance Detected',
+        desc: 'Moderate pixel variance found. This may indicate mixed media quality, harsh re-saves, or minor modifications. Review the glowing areas.',
+        Icon: AlertTriangle
+      };
+    } else {
+      return {
+        bg: 'bg-rose-50 border-rose-100',
+        iconTheme: 'text-rose-600',
+        titleTheme: 'text-rose-900',
+        badgeTheme: 'border-rose-200 text-rose-600',
+        textTheme: 'text-rose-800',
+        title: 'High Forgery Probability',
+        desc: 'Severe pixel variance detected. The brightly glowing areas strongly indicate pasted or digitally altered text.',
+        Icon: AlertTriangle
+      };
+    }
+  };
+
+  const uiConfig = resultData ? getScoreTheme(resultData.score) : null;
+
   return (
     <div className="min-h-screen bg-slate-50 font-sans relative flex flex-col">
       
@@ -112,8 +152,6 @@ export default function DocumentVerificationTool() {
 
       <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-          
-          {/* 🚀 THIS IS YOUR NEW UPDATED LOGO BLOCK */}
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-slate-900 rounded-lg flex items-center justify-center shadow-lg">
               <FileSearch className="w-6 h-6 text-white" />
@@ -155,7 +193,7 @@ export default function DocumentVerificationTool() {
               </div>
             )}
 
-            {status === 'results' && resultData && (
+            {status === 'results' && resultData && uiConfig && (
               <div className="p-6 sm:p-8 animate-in fade-in zoom-in duration-300">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                   <div>
@@ -180,17 +218,17 @@ export default function DocumentVerificationTool() {
                   </div>
                 </div>
 
-                <div className={`border rounded-2xl p-6 mb-8 flex items-start gap-4 transition-colors ${resultData.score > 25 ? 'bg-rose-50 border-rose-100' : 'bg-emerald-50 border-emerald-100'}`}>
-                  {resultData.score > 25 ? <AlertTriangle className="w-8 h-8 text-rose-600 shrink-0 mt-1" /> : <ShieldCheck className="w-8 h-8 text-emerald-600 shrink-0 mt-1" />}
+                <div className={`border rounded-2xl p-6 mb-8 flex items-start gap-4 transition-colors ${uiConfig.bg}`}>
+                  <uiConfig.Icon className={`w-8 h-8 shrink-0 mt-1 ${uiConfig.iconTheme}`} />
                   <div>
-                    <h4 className={`font-bold text-lg mb-1 flex items-center gap-3 ${resultData.score > 25 ? 'text-rose-900' : 'text-emerald-900'}`}>
-                      {resultData.score > 25 ? 'Forgery Probability' : 'Document Appears Authentic'} 
-                      <span className={`px-2.5 py-0.5 rounded-md text-sm font-black shadow-sm bg-white border ${resultData.score > 25 ? 'border-rose-200 text-rose-600' : 'border-emerald-200 text-emerald-600'}`}>
+                    <h4 className={`font-bold text-lg mb-1 flex items-center gap-3 ${uiConfig.titleTheme}`}>
+                      {uiConfig.title} 
+                      <span className={`px-2.5 py-0.5 rounded-md text-sm font-black shadow-sm bg-white border ${uiConfig.badgeTheme}`}>
                         {resultData.score}% Score
                       </span>
                     </h4>
-                    <p className={`text-sm font-medium leading-relaxed ${resultData.score > 25 ? 'text-rose-800' : 'text-emerald-800'}`}>
-                      {resultData.score > 25 ? "High pixel variance detected. The glowing areas represent text that does not match the base error level." : "Compression signatures are uniform. No obvious signs of digital manipulation were detected."}
+                    <p className={`text-sm font-medium leading-relaxed ${uiConfig.textTheme}`}>
+                      {uiConfig.desc}
                     </p>
                   </div>
                 </div>
