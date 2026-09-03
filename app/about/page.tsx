@@ -59,7 +59,7 @@ export default function AboutUs() {
 
             <div className="mt-12 p-6 bg-slate-50 border border-slate-100 rounded-2xl">
               <p className="text-sm text-center text-slate-500">
-                For business inquiries, partnership opportunities, or technical support, please reach out to our administration team. <br/>
+                For business inquiries, partnership opportunities, or technical support, please reach out to jeffenterprisesoffical@gmail.com. <br/>
                 <span className="font-bold text-slate-700 mt-2 block">© 2026 Jeff Enterprises. All rights reserved.</span>
               </p>
             </div>
