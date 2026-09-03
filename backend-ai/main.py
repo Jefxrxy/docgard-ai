@@ -48,20 +48,19 @@ async def analyze_document(file: UploadFile = File(...)):
     
     try:
         contents = await file.read()
-        page_count_multiplier = 1
         
         if "pdf" in content_type:
             print("Converting Multi-Page PDF to Image...")
             pdf_document = fitz.open(stream=contents, filetype="pdf")
             
             max_pages = min(3, len(pdf_document))
-            page_count_multiplier = max_pages
             pdf_images = []
             
             for page_num in range(max_pages):
                 page = pdf_document.load_page(page_num) 
                 pix = page.get_pixmap(matrix=fitz.Matrix(2, 2), alpha=False) 
-                img_data = pix.tobytes("png")
+                # Render to lossy JPEG instead of PNG to preserve ELA baseline
+                img_data = pix.tobytes("jpeg")
                 pdf_images.append(Image.open(io.BytesIO(img_data)))
             
             widths, heights = zip(*(i.size for i in pdf_images))
@@ -84,15 +83,17 @@ async def analyze_document(file: UploadFile = File(...)):
         
         print("Calculating dynamic percentage...")
         stat = ImageStat.Stat(heatmap.convert('L'))
-        avg_pixel_brightness = stat.mean[0]
         
-        adjusted_brightness = avg_pixel_brightness * page_count_multiplier
-        dynamic_score = int((adjusted_brightness / 12.0) * 100)
+        # Use Standard Deviation (variance) rather than Mean to avoid penalizing text density
+        anomaly_variance = stat.stddev[0]
+        
+        # Calculate score based on variance. Divisor (15.0) can be tuned during testing.
+        dynamic_score = int((anomaly_variance / 15.0) * 100)
         
         if dynamic_score < 1: dynamic_score = 1
         if dynamic_score > 99: dynamic_score = 99
         
-        # --- NEW: Match Output Format to Input Format ---
+        # --- Output Format Matching ---
         output_format = "JPEG"
         mime_out = "image/jpeg"
         
@@ -104,7 +105,6 @@ async def analyze_document(file: UploadFile = File(...)):
             mime_out = "image/png"
             
         result_buffer = io.BytesIO()
-        # Save dynamically as PDF, PNG, or JPEG
         heatmap.save(result_buffer, format=output_format) 
         encoded_data = base64.b64encode(result_buffer.getvalue()).decode('utf-8')
         
@@ -114,7 +114,7 @@ async def analyze_document(file: UploadFile = File(...)):
             "confidence_score": dynamic_score,
             "message": "Analysis complete.",
             "heatmap_base64": f"data:{mime_out};base64,{encoded_data}",
-            "mime_type": mime_out # Send the file type to the frontend
+            "mime_type": mime_out
         }
         
     except Exception as e:
